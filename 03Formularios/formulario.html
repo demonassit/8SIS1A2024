@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <script src="./js/validacion.js" ></script>
+</head>
+<body>
+    <div class="main-container" >
+        <div class="container" >
+            <div class="formulario" >
+                <div class="parrafo" >
+                    <p> Todos los formulario que se manejan en la web utilizan metodos para el envio o respuesta de la informacion, los mas comunes son: </p>
+                    <br>
+                    <strong>GET:</strong> Este metodo se encarga de enviar la informacion por la url o salida estandar del navegador, esto propicia que se pueda visualizar toda la informacion del formulario.
+                    <br>
+                    <strong>POST:</strong> este metodo se encarga de enviar la informacion por la url pero de forma oculta, lo que ofrece cierto nivel de seguridad, este metodo se usa comunmente para insertar un nuevo registro dentro de los sistemas.
+                </div>
+                </div>
+                <div class="form" >
+                    <form method="get" name="formulario" onsubmit="return validar(this)" >
+                        <label for="">Nombre:</label>
+                        <br>
+                        <input type="text" name="nombre" id="nombre">
+                        <br>
+                        <label for="">Edad:</label>
+                        <br>
+                        <input type="number" name="edad" id="edad" min="0" max="100">
+                        <br>
+                        <label for="">Correo:</label>
+                        <br>
+                        <input type="email" name="email" id="email">
+                        <br>
+                        <input type="submit" name="enviar" value="Enviar Datos">
+                        <br>
+                        <input type="reset" name="borrar" value="Borrar Datos">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
