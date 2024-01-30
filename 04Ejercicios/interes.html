@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interes Bancario</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <div class="container" >
+        <div class="text" >
+            <p>Formulario para el calculo de la inversion de capital para cuando se jubilen a si ya se jodieron solo da el 2%</p>
+            <div class="form" >
+                <form method="post" name="formulario" action="">
+                    <div class="table-content" >
+                        <table>
+                            <tr>
+                                <td>Introduce la cantidad que deseas invertir</td>
+                                <td>
+                                    <input type="text" name="cantidad"
+                                    onkeypress="return validarn(event)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input type="button" value="Calcular interes" name="enviar" onclick="interes()">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Su saldo total con el interes al 2% mensual es de: </td>
+                                <td>
+                                    <input type="text" readonly="readonly" class="input_text" name="sueldoI" id="cantidadI">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input type="button" value="Borrar Datos" name="borrar" onclick="borrardatos()">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="./js/interes.js" ></script>
+    
+</body>
+</html>
