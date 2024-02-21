@@ -94,3 +94,19 @@ if(razasdePerro.find((raza) => raza === "Pug")){
     razasdePerro.push("Pug");
     console.log(razasdePerro);
 }
+
+
+//FINDINDEX
+
+const indiceChihuahua = razasdePerro.findIndex((raza)=> raza === "Chihuahua");
+
+if(indiceChihuahua > -1){
+    console.log(razasdePerro[indiceChihuahua]);
+    //aparte voy agregar que diga que la raza es pequeña
+    razasdePerro[indiceChihuahua] += "(Raza de pequeña de perro)";
+    console.log(razasdePerro[indiceChihuahua]);
+    //diferencia sin el indice
+    console.log(razasdePerro);
+}else{
+    console.log("No esta esa raza");
+}
