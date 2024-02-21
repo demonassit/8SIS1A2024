@@ -99,3 +99,34 @@ console.log(`Valor mas grande: ${valorMasGrande}` );
 const[valorMasGrande1, valorMasGrande2, valorMasGrande3, ...restoValores] = arregloMayorMenor;
 
 console.log(`VG1, VG2, VG3, ...Resto : ${valorMasGrande1}, ${valorMasGrande2}, ${valorMasGrande3}, ${restoValores}`);
+
+
+//vamos a realizar una busqueda simplificada que se ocupa bastante para suplir jquerry y utilizar los elementos de js como busquedas
+
+const redultadoDeBusqueda = {
+    resultado: [
+        "resultado1",
+        "resultado2",
+        "resultado3",
+        "resultado4",
+        "resultado5",
+        "resultado6",
+        "resultado7"
+    ],
+    total : 7,
+    mejorCoincidencia : "resultado3"
+};
+
+console.log(`Resultado de la busqueda : ${redultadoDeBusqueda}`);
+
+//vamos a suponer que solo nos interesa imprimir las mejores coincidencias de la busqueda
+
+const {mejorCoincidencia} = redultadoDeBusqueda;
+
+console.log(`Mejor coincidencia: ${mejorCoincidencia} `);
+
+//vamos a suponer que remos cambiar el nombre, derivado a que necesitamos mantener la persistencia del codigo
+
+const copiaResultadoDeBusqueda = {...redultadoDeBusqueda};
+
+console.log(`Copia del resultado de busqueda: ${copiaResultadoDeBusqueda}`);
