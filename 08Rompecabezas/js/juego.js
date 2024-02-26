@@ -160,3 +160,70 @@ function intercambiarPosicionesDOM(idPieza1, idPieza2){
     padre.replaceChild(clonElemento1, elementoPieza2);
     padre.removeChild(clonElemento2, elementoPieza1);
 }
+
+//actualizar los movimientos
+
+function actualizarUltimoMovimiento(direccion){
+    var ultimoMov = document.getElementById('flecha');
+    switch(direccion){
+        case codigosDireccion.ARRIBA:
+            ultimoMov.textContent = '↑';
+            break;
+        case codigosDireccion.ABAJO:
+            ultimoMov.textContent = '↓';
+            break;
+        case codigosDireccion.DERECHA:
+            ultimoMov.textContent = '→';
+            break;
+        case codigosDireccion.IZQUIERDA:
+            ultimoMov.textContent = '←';
+            break;    
+    }
+}
+
+//mezclar las piezas
+
+function mezclarPiezas(veces){
+    if(veces <= 0){
+        return;
+    }
+
+    var direcciones = [codigosDireccion.ABAJO,codigosDireccion.ARRIBA, codigosDireccion.IZQUIERDA, codigosDireccion.DERECHA];
+
+    var direccion = direcciones[Math.floor(Math.random()*direcciones.length)];
+
+    moverEnDireccion(direccion);
+    setTimeout(function() {
+        mezclarPiezas(veces -1);
+    }, 100);
+}
+
+//saber que teclas esta oprimiendo el jugar
+
+function capturarTeclas(){
+    //necesitamos saber que tecla se esta movimiento
+    document.body.onkeydown = (function(evento){
+        if(evento.which === codigosDireccion.ABAJO || evento.which === codigosDireccion.ARRIBA || evento.which === codigosDireccion.IZQUIERDA || evento.which === codigosDireccion.DERECHA){
+            moverEnDireccion(evento.which);
+            actualizarUltimoMovimiento(evento.which);
+
+            var gane = checarSiGano;
+            if(gane){
+                setTimeout(function(){
+                    mostrarCartelGanador();
+                }, 500);
+            }
+            evento.preventDefault;
+        }
+    })
+}
+
+//iniciar el juego
+function iniciar(){
+    mezclarPiezas(30);
+    capturarTeclas();
+}
+
+iniciar();
+//llamar las instrucciones del juego
+mostrarInstrucciones(instrucciones);
