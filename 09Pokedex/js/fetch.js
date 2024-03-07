@@ -81,5 +81,69 @@ const pokedex = () => {
         //agrego las etiquetas que se crearon nuevas en el html
         containers.pokemonTypesContainer.innerHTML = pokemonType;
     };
+
+    //vamos a obtener las estadisticas del pokemon
+    const processPokemonStats = (pokemonData) => {
+        //lo que vamos hacer es una funcion que se encargue de ir iterando sobre cada
+        //uno de los datos que existen en la api, para ello ocupamos un forEach, pero
+        //vamos a preguntar dentro de la iteracion si es del pokemon que estamos buscando
+        pokemonData?.forEach((pokemonStatData) => {
+            //aqui tenemos que evaluar si es el nombre del pokemon obtener sus valores 
+            //pero los tenemos que incorporar en su contenedor y agregar los elementos
+            switch(pokemonStatData.stat.name){
+                case "hp":
+                    pokemonStatsElements.hp.innerHTML = pokemonStatData.base_stat;
+                    pokemonStatsElements.hp.style = `background: linear-gradient(0deg, rgba(0,118,255,1) ${pokemonStatData.base_stat}%, rgba(0,0,0,1) ${pokemonStatData.base_stat}%);`;
+                    break;
+                case "attack":
+                    pokemonStatsElements.attack.innerHTML = pokemonStatData.base_stat;
+                    pokemonStatsElements.attack.style = `background: linear-gradient(0deg, rgba(0,118,255,1) ${pokemonStatData.base_stat}%, rgba(0,0,0,1) ${pokemonStatData.base_stat}%);`;
+                    break;
+                case "defense":
+                    pokemonStatsElements.defense.innerHTML = pokemonStatData.base_stat;
+                    pokemonStatsElements.defense.style = `background: linear-gradient(0deg, rgba(0,118,255,1) ${pokemonStatData.base_stat}%, rgba(0,0,0,1) ${pokemonStatData.base_stat}%);`;
+                    break;
+                case "special-attack":
+                    pokemonStatsElements.specialAttack.innerHTML = pokemonStatData.base_stat;
+                    pokemonStatsElements.specialAttack.style = `background: linear-gradient(0deg, rgba(0,118,255,1) ${pokemonStatData.base_stat}%, rgba(0,0,0,1) ${pokemonStatData.base_stat}%);`;
+                    break;
+                case "special-defense":
+                    pokemonStatsElements.specialDefense.innerHTML = pokemonStatData.base_stat;
+                    pokemonStatsElements.specialDefense.style = `background: linear-gradient(0deg, rgba(0,118,255,1) ${pokemonStatData.base_stat}%, rgba(0,0,0,1) ${pokemonStatData.base_stat}%);`;
+                    break;
+                case "speed":
+                    pokemonStatsElements.speed.innerHTML = pokemonStatData.base_stat;
+                    pokemonStatsElements.speed.style = `background: linear-gradient(0deg, rgba(0,118,255,1) ${pokemonStatData.base_stat}%, rgba(0,0,0,1) ${pokemonStatData.base_stat}%);`;
+                    break;
+            }
+        });
+    };
+    //debo crear otra funcion que se encargue de obtener los movimientos y colocarlos
+    //en su contenedor
+    const processPokemonMoves = (pokemonData) => {
+        let pokemonMovesContent = "";
+        pokemonData.moves?forEach((pokemonMove) => {
+            pokemonMovesContent += `<li>${pokemonMove.move.name}</li>`;
+        });
+        containers.pokemonMovesElement.innerHTML = pokemonMovesContent;
+    };
+    //debo crear otra funcion que se encargue de obtener las habilidades y colocarlos
+    //en su contenedor
+    const processPokemonAbilities = (pokemonData) => {
+        let pokemonAbilitiesContent = "";
+        pokemonData.abilities?forEach((pokemonAbility) => {
+            pokemonAbilitiesContent += `<li>${pokemonAbility.ability.name}</li>`;
+        });
+        containers.pokemonAbilitiesElement.innerHTML = pokemonAbilitiesContent;
+    };
+    //tengo que crear una funcion para la carga de la imagen y deshabilitar los botones
+    const setLoading = () => {
+        containers.imageContainer.innerHTML = imageTemplete.replace("{imgSrc}", images.imgLoading);
+        buttons.all.forEach(button => button.disabled = true);
+    };
+    //necesito otra funcion que se encargue de volver habilitar
+    const setLoadingComplete = () => {
+        buttons.all.forEach(button => checkDisabled(button));
+    };
     
 }
