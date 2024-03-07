@@ -145,5 +145,76 @@ const pokedex = () => {
     const setLoadingComplete = () => {
         buttons.all.forEach(button => checkDisabled(button));
     };
-    
-}
+    /*
+    Tenemos que crear una funcion mediante la cual podamos realizar una peticion y mientras esta obteniendo la informacion por partes esperemos su respuesta, para eso nos sirve una funcion fetch, ya que esta funcion tiene la facultad de poder cargar archivos de forma local, fetch recibe una url del recurso o destino de la peticion y establece un objeto que nos ayuda a obtener algunos parametros.
+    fetch devuelve una promesa, las promesas como su nombre lo dicen son funciones mediante las cuales nosotros hacemos una peticion, entonces debemos esperar un tiempo x para la respuesta, significa que la peticion se sigue procesando en un tiempo desconocido pero se asegura que va a existir una respuesta es por eso que fetch tiene un then y un catch, entonces nosotros debemos crear una funcion mediante un objeto de json podamos obtener toda la informacion que tenemos en las funciones anteriores y puede ser que lo primero que encuentre sea las habilidades, o las estadisticas o los movimientos, no imporque obtenga primero sino que al momento de realizar la peticion tendremos una promesa de una respuesta
+    */
+   const getPokemonData = async (pokemonName) => fetch(`${pokeApiUrl}pokemon/${pokemonName}`, {
+    //existen varios metodos de http que sirven para poder realizar peticiones, como este el caso tenemos que empezar a especificar el tipo de metodo mediante el cual nosotros haremos la peticion 
+    method : 'GET', //tambien podemos usar POST, PUT, DELETE, PACH, ETC
+    //debo de establecer la cabecera del la peticion, debido a que tenemos que especificar el tipo de informacion que vamos a colocar
+    headers : {
+        'Content-Type' : 'application/json'
+    }, 
+    //debemos de especificar el cuerpo de la solicitud o peticion, por ejemplo si nosotros tenemos que incorporar algun elemento puede ser : body : JSON.stringify(myObjetoJson) esto es cuando sea una peticion POST o PUT, para el GET no es necesario derivado a que nosotros solo estamos consumiendo informacion, mientras que POST o PUT realizar una actualizacion a la peticion ingresando o modificando los datos del JSON original 
+   }).then((res) => res.json()).catch((error) => ({resquestFailed : true}));
+
+   //tenemos que ver si se debe de deshabilitar los botones o no, en caso unicamente de que se necesite deshabilitar el boton inferior ya que no existen pokemones negativos con id
+   const checkDisabled = (button) =>{
+    button.disabled = button.id === "btnDown" && containers.pokemonIdElement.value <= 1;
+   }
+   //vamos hacer la funcion cuya promesa es obtener todos los datos del pokemon
+   const setPokemonData = async (pokemonName) => {
+    if(pokemonName){
+        //primero ponemos la imagen de la busqueda y deshabilitamos los botones para la consulta
+        setLoading();
+        //realizo la consulta, en este caso con await porque debemos de esperar una respuesta en un tiempo asincrono 
+        const pokemonData = await getPokemonData(typeof pokemonName === typeof "" ? pokemonName.toLowerCase() : pokemonName);
+        if(pokemonData.resquestFailed){
+            //si no se encontro el pokemon debemos colocar la imagen de no encontrado
+            containers.imageContainer.innerHTML = imageTemplete.replace("{imgSrc}", images.imgPokemonNoFound);
+        }else{
+            //al encontrarlo debemos de colocar la imagen y el id del pokemon
+            containers.imageContainer.innerHTML = `${imageTemplete.replace("{imgSrc}". pokemonData.sprites.front_default)} ${imageTemplete.replace("{imgSrc}". pokemonData.sprites.front_shiny)}`;
+            //ahora van los datos nombre id tipo estadisticas movimientos y habilidades
+            containers.pokemonNameElement.innerHTML = pokemonData.name;
+            containers.pokemonIdElement.innerHTML = pokemonData.id;
+            //mando a llamar cada una de mis funciones
+            processPokemonTypes(pokemonData);
+            processPokemonStats(pokemonData);
+            processPokemonMoves(pokemonData);
+            processPokemonAbilities(pokemonData);
+        }
+        //vuelvo habilitar los botones
+        setLoadingComplete();
+    }else{
+        //tenemos que utilizar una alerta o una notificacion de error y podemos utilizar SweetAlert porque se ven bonitas 
+        Swal.fire({
+            title: "Error",
+            text: "Ingresa el nombre de un pokemon primero",
+            icon: "error",
+            confirmButtonText : "Aceptar"
+          });
+    }
+   };
+
+   //tenemos que vincular una funcion de busqueda al boton buscar
+   const triggers = () => {
+    buttons.search.onclick = () => setPokemonData(pokemonInput.value);
+    //se le vincula la funcion de busqueda al campo de texto para buscar precionando enter
+    pokemonInput.onkeyup = (event) => {
+        event.preventDefault();
+        if(event.key === "Enter"){
+            setPokemonData(pokemonInput.value);
+        }
+    }
+    //tenemos que vincular las funciones de busqueda para cuando sea arriba o abajo 
+    buttons.next.onclick = () => setPokemonData(+containers.pokemonIdElement.value + 1);
+    buttons.previous.onclick = () => setPokemonData(+containers.pokemonIdElement.value - 1);
+   };
+   setLoadingComplete();
+   triggers();
+};
+
+//ejecutarlo
+window.onload = pokedex;
