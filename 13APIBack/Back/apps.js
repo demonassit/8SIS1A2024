@@ -50,3 +50,65 @@ app.get('/13APIBack/Back/articulos', (req, res) => {
         }
     })
 });
+
+//ruta post es para insertar
+app.post('/13APIBack/Back/articulos', (req, res) =>{
+    //vamos a insertar en la bd
+    let data = {
+        descripcion : req.body.descripcion,
+        precio : req.body.precio,
+        stock : req.body.stock
+    };
+
+    //vamos con la sentencia
+    let sql = "insert into articulos SET ?";
+    conexion.query(sql, data, function(error, result){
+        if(error){
+            throw error;
+            console.log('Error al insertar un registro de la tabla');
+        }else{
+            //primero necesitamos un objeto para asignar el id
+            Object.assign(data, {id : result.insertId});
+            //como ya en data se agrega el id
+            res.send(data);
+        }
+    });
+
+})
+
+//ruta put es para editar
+app.put('/13APIBack/Back/articulos', (req, res) => {
+    //primero necesitamos las variables que vamos a editar
+    let id = req.params.id;
+    let descripcion = req.params.descripcion;
+    let precio = req.params.precio;
+    let stock = req.params.stock;
+
+    let sql = "update articulos set descripcion = ?, precio = ?, stock = ? where id = ?";
+
+    conexion.query(sql, [descripcion, precio, stock, id], function(error, result){
+        if(error){
+            throw error;
+            console.log('Error al actualizar un registro de la tabla');
+        }else{
+            console.log('conecto con la tabla');
+            res.send(result);
+        }
+    });
+});
+
+
+//ruta delete 
+app.delete('/13APIBack/Back/articulos', (req, res) => {
+    conexion.query('delete from articulos where id = ?', [req.params.id], function(error, result){
+        if(error){
+            throw error;
+            console.log('Error al eleiminar un registro de la tabla');
+        }else{
+            console.log('conecto con la tabla');
+            res.send(result);
+        }
+    });
+});
+
+
